@@ -1,7 +1,7 @@
-````md
 # Prometheus + Grafana + Alertmanager + Node Exporter Setup Runbook
 
 ## Objective
+
 This document captures the end-to-end process that was successfully implemented for VM monitoring using:
 
 - Prometheus
@@ -18,27 +18,27 @@ The full monitoring flow, dashboard visibility, and alert validation were comple
 
 ---
 
-# 1. Scope
+## 1. Scope
 
-## Phase 1
+### Phase 1
+
 For the initial setup, monitoring was configured only for VMs:
 
 - Utho monitoring server
 - One Azure target VM
 
-## Components used
+### Components used
+
 - **Prometheus** → metrics collection and storage
 - **Grafana** → dashboard visualization
 - **Alertmanager** → alert handling
 - **Node Exporter** → server metrics exposure
 
-## Monitoring flow
+### Monitoring flow
+
 ```text
 Target VM → Node Exporter → Prometheus → Grafana
 Prometheus → Alertmanager
-````
-
----
 
 # 2. Server Details
 
