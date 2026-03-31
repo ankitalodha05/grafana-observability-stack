@@ -1,4 +1,4 @@
-
+<img width="1177" height="770" alt="image" src="https://github.com/user-attachments/assets/bc18f093-7e79-4369-a340-4fb5be86d974" />
 # 🚀 Observability Stack DevOps
 
 ## 📌 Overview
@@ -79,6 +79,7 @@ Grafana Dashboard
 * Stored in Loki
 * Visualized in Grafana
 * Multi-VM filtering using dropdown
+<img width="1187" height="795" alt="image" src="https://github.com/user-attachments/assets/5f981042-21d7-4dee-b409-3a2fcc935dcb" />
 
 ---
 
@@ -87,6 +88,8 @@ Grafana Dashboard
 * CPU, Memory, Disk, Network metrics
 * Prometheus-based scraping
 * Grafana dashboards for visualization
+<img width="1177" height="770" alt="image" src="https://github.com/user-attachments/assets/a772e3bb-2b05-4bdb-8c7e-7e034a219271" />
+<img width="1844" height="939" alt="image" src="https://github.com/user-attachments/assets/886301d8-a5f6-4464-ab1a-384d26f6cdb3" />
 
 ---
 
