@@ -1,7 +1,4 @@
 
-## 📘 Document
-
-````markdown
 # End-to-End Logging Setup using Loki and Promtail
 
 ## Objective
