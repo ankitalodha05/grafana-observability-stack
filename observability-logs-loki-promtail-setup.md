@@ -1,30 +1,30 @@
 
-# Loki and Promtail Setup on VM (Beginner Guide)
+# Multi-VM Centralized Logging with Loki and Promtail
 
 ## Objective
 
-This document explains how to configure Promtail on a VM to collect system logs and send them to Loki. Grafana dashboard is assumed to be already available.
+This document explains how to configure multiple VMs to send logs to a single Loki server and visualize them in Grafana.
 
 ---
 
 ## Architecture
 
-VM Logs → Promtail → Loki → Grafana
+Multiple VMs → Promtail (on each VM) → Central Loki → Grafana
 
 ---
 
 ## Prerequisites
 
-- Linux VM (Ubuntu)
-- Loki server running and accessible
-- Grafana already configured
-- Network access to Loki (port 3100)
+- Multiple Linux VMs
+- One central Loki server
+- Grafana already configured with Loki datasource
+- Network connectivity from all VMs to Loki (port 3100 open)
 
 ---
 
-## Step 1: Install Promtail
+## Step 1: Install Promtail on Each VM
 
-Download and prepare Promtail binary:
+On every VM, install Promtail:
 
 ```bash
 wget https://github.com/grafana/loki/releases/download/v2.9.0/promtail-linux-amd64.zip
@@ -35,15 +35,15 @@ sudo mv promtail-linux-amd64 /tmp/
 
 ---
 
-## Step 2: Create Promtail Configuration
+## Step 2: Configure Promtail on Each VM
 
-Create config file:
+Create configuration file:
 
 ```bash
 sudo nano /etc/promtail/config.yml
 ```
 
-Add the following configuration:
+Use the following configuration:
 
 ```yaml
 server:
@@ -62,7 +62,7 @@ scrape_configs:
           - localhost
         labels:
           job: syslog
-          host: <VM_IP>
+          host: <VM_NAME>
           __path__: /var/log/syslog
 
   - job_name: auth-log
@@ -71,35 +71,31 @@ scrape_configs:
           - localhost
         labels:
           job: auth-log
-          host: <VM_IP>
+          host: <VM_NAME>
           __path__: /var/log/auth.log
 ```
 
 Replace:
 
-* `<LOKI_IP>` with Loki server IP
-* `<VM_IP>` with current VM IP
+* `<LOKI_IP>` with central Loki server IP
+* `<VM_NAME>` with unique identifier for each VM (example: vm-1, vm-2, prod-app-1)
 
 ---
 
-## Step 3: Start Promtail
-
-Run Promtail:
+## Step 3: Start Promtail on Each VM
 
 ```bash
 sudo /tmp/promtail-linux-amd64 -config.file=/etc/promtail/config.yml
 ```
 
-Promtail will start reading log files and sending data to Loki.
-
 ---
 
-## Step 4: Generate Test Log
+## Step 4: Generate Test Logs
 
-Create a test log entry:
+On each VM:
 
 ```bash
-logger "promtail test log"
+logger "multi vm test log"
 ```
 
 ---
@@ -108,46 +104,60 @@ logger "promtail test log"
 
 Open Grafana → Explore → Select Loki datasource
 
-Run query:
+### View all logs
 
 ```logql
 {job="syslog"}
 ```
 
-To filter test logs:
+### Filter by specific VM
 
 ```logql
-{job="syslog"} |= "promtail test"
+{job="syslog", host="vm-1"}
 ```
+
+### Search specific logs
+
+```logql
+{job="syslog"} |= "multi vm test"
+```
+
+---
+
+## Step 6: Create Host-Based Filtering (Dashboard)
+
+To dynamically filter logs by VM:
+
+Use query:
+
+```logql
+label_values({job="syslog"}, host)
+```
+
+This will list all VM names sending logs.
 
 ---
 
 ## Important Notes
 
-* Promtail reads logs from the end of the file, so only new logs are visible.
-* Always generate a fresh log after starting Promtail.
-* Logs should be viewed using Explore or Table format in Grafana.
-* Time range should be small (last 5 or 15 minutes) during testing.
+* Each VM must have a unique `host` label.
+* Promtail reads only new logs after startup.
+* Ensure time range is small during testing (last 5–15 minutes).
+* Use Explore or Table view for logs.
 
 ---
 
 ## Troubleshooting
 
-### Check Loki connectivity
+### Check Loki connectivity from each VM
 
 ```bash
 curl http://<LOKI_IP>:3100/ready
 ```
 
-Expected output:
-
-```
-ready
-```
-
 ---
 
-### Check Promtail process
+### Check Promtail running
 
 ```bash
 ps -ef | grep promtail
@@ -155,7 +165,7 @@ ps -ef | grep promtail
 
 ---
 
-### Check log file
+### Check logs available on VM
 
 ```bash
 tail -n 20 /var/log/syslog
@@ -163,16 +173,7 @@ tail -n 20 /var/log/syslog
 
 ---
 
-### Fix permission issues
-
-```bash
-sudo chmod 644 /var/log/syslog
-sudo chmod 644 /var/log/auth.log
-```
-
----
-
-### Restart Promtail
+### Restart Promtail if needed
 
 ```bash
 sudo pkill promtail
@@ -182,8 +183,17 @@ sudo /tmp/promtail-linux-amd64 -config.file=/etc/promtail/config.yml
 
 ---
 
+## Best Practices
+
+* Use meaningful VM names in `host` label
+* Keep same config structure across all VMs
+* Separate logs by job (syslog, auth-log, application logs)
+* Use centralized Loki for all environments
+
+---
+
 ## Conclusion
 
-Promtail collects logs from the VM and sends them to Loki. Logs can be queried and visualized in Grafana using LogQL queries.
+Multiple VMs can send logs to a single Loki instance using Promtail. Logs can be filtered by host in Grafana, enabling centralized monitoring across all systems.
 
 ```
