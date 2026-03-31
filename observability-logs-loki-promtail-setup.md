@@ -1,13 +1,4 @@
 
-
-## 📄 Suggested File Name
-
-```text
-observability-logs-loki-promtail-setup.md
-```
-
----
-
 ## 📘 Document
 
 ````markdown
