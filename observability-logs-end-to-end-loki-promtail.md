@@ -7,6 +7,24 @@ This document explains how to set up centralized logging using Loki and Promtail
 
 ---
 
+## Overview
+
+Loki and Promtail together provide a centralized logging solution.
+
+Promtail runs on each VM and collects logs from local files such as /var/log/syslog and /var/log/auth.log. It continuously monitors these files and sends new log entries to Loki.
+
+Loki is a log aggregation system that receives logs from multiple Promtail agents and stores them in a structured way. It indexes logs based on labels such as job and host, which makes it easy to search and filter logs.
+
+In this setup:
+
+- Promtail acts as the log collector and forwarder
+- Loki acts as the centralized log storage
+- Grafana is used to query and visualize the logs
+
+This allows logs from multiple VMs to be collected in one place and analyzed efficiently.
+
+---
+
 ## Architecture
 
 Multiple VMs → Promtail → Loki → Grafana
@@ -124,8 +142,8 @@ scrape_configs:
 
 Replace:
 
-* `<LOKI_IP>` with Loki server IP
-* `<VM_NAME>` with unique VM identifier
+* <LOKI_IP> with Loki server IP
+* <VM_NAME> with unique VM identifier
 
 ---
 
