@@ -35,7 +35,7 @@ Multiple VMs → Promtail → Loki → Grafana
 
 - Loki server VM
 - Multiple application VMs
-- Grafana already configured with Loki datasource
+- Grafana already configured with Loki datasource [click here for document](./grafana-loki-setup.md)
 - Docker installed on Loki server
 - Network connectivity between VMs and Loki
 
