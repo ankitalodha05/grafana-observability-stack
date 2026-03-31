@@ -50,7 +50,7 @@ Prometheus → Alertmanager
 Used as the central monitoring server.
 
 * **Hosted on:** Utho
-* **Public IP:** `103.150.136.119`
+* **Public IP:** `103.150.136.xxx`
 
 Installed on this server:
 
@@ -64,7 +64,7 @@ Installed on this server:
 Used as the monitored server.
 
 * **Hosted on:** Azure
-* **Target IP used in setup:** `20.6.128.221`
+* **Target IP used in setup:** `20.6.128.xxx`
 
 Installed on this VM:
 
@@ -140,7 +140,7 @@ For the Azure target VM, port `9100` was allowed through the **Network Security 
 
 #### Rule Details
 
-* **Source:** Monitoring server IP `103.150.136.119`
+* **Source:** Monitoring server IP `103.150.136.xxx`
 * **Protocol:** `TCP`
 * **Destination Port:** `9100`
 * **Action:** `Allow`
@@ -386,7 +386,7 @@ scrape_configs:
   - job_name: "target-vms"
     static_configs:
       - targets:
-          - "20.6.128.221:9100"
+          - "20.6.128.xxx:9100"
 ```
 
 Set permissions:
@@ -565,7 +565,7 @@ ss -tulnp | grep :9100
 After Node Exporter was installed on the target VM and NSG rule for port `9100` was added, connectivity was tested from the monitoring server:
 
 ```bash
-curl -s http://20.6.128.221:9100/metrics | head
+curl -s http://20.6.128.xxx:9100/metrics | head
 ```
 
 This confirmed:
@@ -581,13 +581,13 @@ This confirmed:
 ### 10.1 Open Prometheus UI
 
 ```text
-http://103.150.136.119:9090
+http://103.150.136.xxx:9090
 ```
 
 ### 10.2 Open Targets Page
 
 ```text
-http://103.150.136.119:9090/targets
+http://103.150.136.xxx:9090/targets
 ```
 
 Verified targets:
@@ -605,7 +605,7 @@ All targets were shown as **UP**.
 ### 11.1 Open Grafana UI
 
 ```text
-http://103.150.136.119:3000
+http://103.150.136.xxx:3000
 ```
 
 Default login:
@@ -656,7 +656,7 @@ Filters used for monitoring server:
 Filters used for target VM:
 
 * **Job** = `target-vms`
-* **Instance** = `20.6.128.221:9100`
+* **Instance** = `20.6.128.xxx:9100`
 
 Metrics verified:
 
@@ -674,7 +674,7 @@ Metrics verified:
 ### 12.1 Open Alertmanager UI
 
 ```text
-http://103.150.136.119:9093
+http://103.150.136.xxx:9093
 ```
 
 Alertmanager UI was accessible successfully.
@@ -822,7 +822,7 @@ promtool check rules /etc/prometheus/alert.rules.yml
 ### Test Target Metrics from Monitoring Server
 
 ```bash
-curl -s http://20.6.128.221:9100/metrics | head
+curl -s http://20.6.128.xxx:9100/metrics | head
 ```
 
 ---
