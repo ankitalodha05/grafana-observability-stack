@@ -1,4 +1,4 @@
-<img width="1177" height="770" alt="image" src="https://github.com/user-attachments/assets/bc18f093-7e79-4369-a340-4fb5be86d974" />
+
 # 🚀 Observability Stack DevOps
 
 ## 📌 Overview
