@@ -1,7 +1,4 @@
 
-## 📘 Document
-
-````markdown
 # Loki and Promtail Setup on VM (Beginner Guide)
 
 ## Objective
