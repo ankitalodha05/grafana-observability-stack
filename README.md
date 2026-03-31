@@ -40,6 +40,7 @@ Grafana Dashboard
         ├── Traces Analysis
         └── Alerting
 ```
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/8d6bf279-e333-40f1-9e98-10626847f004" />
 
 ---
 
